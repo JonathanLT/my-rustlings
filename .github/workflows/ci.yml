@@ -1,0 +1,27 @@
+name: Rustlings CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  rustlings:
+    name: Validate with Rustlings
+    runs-on: ubuntu-latest
+    env:
+      RUSTLINGS_BRANCH: ${{ github.head_ref || github.ref_name }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build CI image
+        run: docker build --tag rustlings-ci:latest .
+
+      - name: Run Rustlings
+        run: |
+          docker run --rm \
+            --volume "${GITHUB_WORKSPACE}:/workspace" \
+            --workdir /workspace \
+            rustlings-ci:latest \
+            "${RUSTLINGS_BRANCH}"

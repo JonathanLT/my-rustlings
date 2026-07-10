@@ -1,0 +1,6 @@
+.git
+.github
+.rustlings-state.txt
+target
+Dockerfile
+*.swp
